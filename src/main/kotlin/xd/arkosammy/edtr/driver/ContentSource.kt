@@ -8,5 +8,14 @@ interface ContentSource {
      */
     fun readSlice(startLine: Int, endLine: Int): Slice
 
+    /**
+     * Overwrites the slice's range with its contents.
+     */
     fun writeSlice(slice: Slice)
+
+    /**
+     * @param overridePath the path to use instead of the content's load path. Permanently replaces the old path.
+     * @return whether the save was successful or not.
+     */
+    fun save(overridePath: String? = null): Boolean
 }

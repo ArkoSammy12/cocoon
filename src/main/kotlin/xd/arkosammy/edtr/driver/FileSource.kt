@@ -2,7 +2,7 @@ package xd.arkosammy.edtr.driver
 
 import java.io.File
 
-class FileSource(private val path: String) : ContentSource {
+class FileSource(private var path: String) : ContentSource {
     private var contents: String = File(path).readText()
 
     override fun readSlice(startLine: Int, endLine: Int): Slice {
@@ -23,14 +23,28 @@ class FileSource(private val path: String) : ContentSource {
 
         beforeSlice.forEach {
             result += it
+            result += '\n'
         }
 
         result += slice.contents
 
         afterSlice.forEach {
             result += it
+            result += '\n'
         }
 
         contents = result
+    }
+
+    override fun save(overridePath: String?): Boolean {
+        try {
+            if (overridePath is String)
+                path = overridePath
+
+            File(path).writeText(contents)
+            return true
+        } catch (e: Exception) {
+            return false
+        }
     }
 }
