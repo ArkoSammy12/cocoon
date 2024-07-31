@@ -2,7 +2,7 @@ package xd.arkosammy.edtr.driver
 
 import java.io.File
 
-class LoadedFile(path: String) : ContentSource {
+class FileSource(path: String) : ContentSource {
     private val contents: String = File(path).readText()
 
     override fun readSlice(startLine: Int, endLine: Int): String {
