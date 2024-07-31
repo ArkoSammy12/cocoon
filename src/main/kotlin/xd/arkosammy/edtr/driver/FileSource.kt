@@ -10,6 +10,7 @@ class FileSource(private var path: String) : ContentSource {
 
         contents.lines().subList(startLine, endLine).forEach {
             result += it
+            result += '\n'
         }
 
         return Slice(result, startLine, endLine)
