@@ -9,6 +9,7 @@ import xd.arkosammy.edtr.driver.Slice
 import xd.arkosammy.edtr.util.EditingMode
 import xd.arkosammy.edtr.util.ScrollDirection
 import xd.arkosammy.edtr.util.TextLine
+import java.lang.Math.clamp
 
 abstract class AbstractViewFinder(
     final override val contentSource: ContentSource,
@@ -38,23 +39,21 @@ abstract class AbstractViewFinder(
             return
         }
 
+        val lines: List<String> = this.currentSlice.contents.split("\n", "\r")
         val cursorX: Int = this.backingCursorPosition.column
         val cursorY: Int = this.backingCursorPosition.row
-
-        val lines: List<String> = this.currentSlice.contents.split("\n", "\r")
-        val sizeX: Int = lines[cursorY].length + 1
         val sizeY: Int = lines.size - 1
 
         val newCursorPosition: TerminalPosition? = when (keyStroke.keyType) {
-            KeyType.ArrowUp -> TerminalPosition(Math.clamp(cursorX.toLong(), 0, lines[cursorY - 1].length), Math.clamp(cursorY.toLong() - 1, 0, sizeY))
-            KeyType.ArrowDown -> TerminalPosition(Math.clamp(cursorX.toLong(), 0, lines[cursorY + 1].length), Math.clamp(cursorY.toLong() + 1, 0, sizeY))
-            KeyType.ArrowLeft -> TerminalPosition(Math.clamp(cursorX.toLong() - 1, 0, sizeX), Math.clamp(cursorY.toLong(), 0, sizeY))
-            KeyType.ArrowRight -> TerminalPosition(Math.clamp(cursorX.toLong() + 1, 0, sizeX), Math.clamp(cursorY.toLong(), 0, sizeY))
+            KeyType.ArrowUp -> TerminalPosition(cursorX, cursorY - 1)
+            KeyType.ArrowDown -> TerminalPosition(cursorX, cursorY + 1)
+            KeyType.ArrowLeft -> TerminalPosition(cursorX - 1, cursorY)
+            KeyType.ArrowRight -> TerminalPosition(cursorX + 1, cursorY)
             else -> null
         }
 
-        if (newCursorPosition != null) {
-            this.backingCursorPosition = newCursorPosition
+        newCursorPosition?.let {
+            this.backingCursorPosition = TerminalPosition(clamp(it.column.toLong(), 0, lines[newCursorPosition.row].length), clamp(it.row.toLong(), 0, sizeY))
             return
         }
 
@@ -65,7 +64,7 @@ abstract class AbstractViewFinder(
         val scrollDirection: ScrollDirection? = when (keyStroke.keyType) {
             KeyType.ArrowUp -> if (cursorY >= sizeY) ScrollDirection.DOWN else null
             KeyType.ArrowLeft -> if (cursorX <= 0) ScrollDirection.LEFT else null
-            KeyType.ArrowRight -> if (cursorX >= sizeX) ScrollDirection.RIGHT else null
+            KeyType.ArrowRight -> if (cursorX >= lines[this.backingCursorPosition.row].length) ScrollDirection.RIGHT else null
             KeyType.ArrowDown -> if (cursorY <= 0) ScrollDirection.UP else null
             else -> null
         }
