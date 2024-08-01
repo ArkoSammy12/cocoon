@@ -48,10 +48,10 @@ abstract class AbstractViewFinder(
         val sizeY: UInt = this.size.columns.toUInt()
 
         val newCursorPosition: TerminalPosition? = when (keyStroke.keyType) {
-            KeyType.ArrowUp -> TerminalPosition(Math.clamp(cursorX.toLong(), 0, sizeX.toInt()), Math.clamp(cursorY.toLong() + 1, 0, sizeY.toInt()))
+            KeyType.ArrowUp -> TerminalPosition(Math.clamp(cursorX.toLong(), 0, sizeX.toInt()), Math.clamp(cursorY.toLong() - 1, 0, sizeY.toInt()))
             KeyType.ArrowLeft -> TerminalPosition(Math.clamp(cursorX.toLong() - 1, 0, sizeX.toInt()), Math.clamp(cursorY.toLong(), 0, sizeY.toInt()))
             KeyType.ArrowRight -> TerminalPosition(Math.clamp(cursorX.toLong() + 1, 0, sizeX.toInt()), Math.clamp(cursorY.toLong(), 0, sizeY.toInt()))
-            KeyType.ArrowDown -> TerminalPosition(Math.clamp(cursorX.toLong(), 0, sizeX.toInt()), Math.clamp(cursorY.toLong() - 1, 0, sizeY.toInt()))
+            KeyType.ArrowDown -> TerminalPosition(Math.clamp(cursorX.toLong(), 0, sizeX.toInt()), Math.clamp(cursorY.toLong() + 1, 0, sizeY.toInt()))
             else -> null
         }
 
@@ -85,14 +85,14 @@ abstract class AbstractViewFinder(
             if (this.cursorPosition.row == y) {
                 val firstPart: String = currentLine.substring(0, this.cursorPosition.column)
                 val secondPart: String = currentLine.substring(this.cursorPosition.column, currentLine.length)
-                currentLine = firstPart + newChar + secondPart + '\n'
+                currentLine = firstPart + newChar + secondPart
             }
             newLines.add(currentLine)
         }
 
         var newContents: String = ""
         for (line in newLines) {
-            newContents += line
+            newContents += line + '\n'
         }
 
         this.currentSlice.modified(newContents)
