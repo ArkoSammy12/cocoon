@@ -9,6 +9,7 @@ import xd.arkosammy.edtr.driver.Slice
 import xd.arkosammy.edtr.util.EditingMode
 import xd.arkosammy.edtr.util.ScrollDirection
 import xd.arkosammy.edtr.util.TextLine
+import java.lang.Math.clamp
 
 abstract class AbstractViewFinder(
     final override val contentSource: ContentSource,
@@ -46,10 +47,10 @@ abstract class AbstractViewFinder(
         val sizeY: Int = lines.size - 1
 
         val newCursorPosition: TerminalPosition? = when (keyStroke.keyType) {
-            KeyType.ArrowUp -> TerminalPosition(Math.clamp(cursorX.toLong(), 0, lines[cursorY - 1].length), Math.clamp(cursorY.toLong() - 1, 0, sizeY))
-            KeyType.ArrowDown -> TerminalPosition(Math.clamp(cursorX.toLong(), 0, lines[cursorY + 1].length), Math.clamp(cursorY.toLong() + 1, 0, sizeY))
-            KeyType.ArrowLeft -> TerminalPosition(Math.clamp(cursorX.toLong() - 1, 0, sizeX), Math.clamp(cursorY.toLong(), 0, sizeY))
-            KeyType.ArrowRight -> TerminalPosition(Math.clamp(cursorX.toLong() + 1, 0, sizeX), Math.clamp(cursorY.toLong(), 0, sizeY))
+            KeyType.ArrowUp -> TerminalPosition(clamp(cursorX.toLong(), 0, lines[cursorY - 1].length), clamp(cursorY.toLong() - 1, 0, sizeY))
+            KeyType.ArrowDown -> TerminalPosition(clamp(cursorX.toLong(), 0, lines[cursorY + 1].length), clamp(cursorY.toLong() + 1, 0, sizeY))
+            KeyType.ArrowLeft -> TerminalPosition(clamp(cursorX.toLong() - 1, 0, sizeX), clamp(cursorY.toLong(), 0, sizeY))
+            KeyType.ArrowRight -> TerminalPosition(clamp(cursorX.toLong() + 1, 0, sizeX), clamp(cursorY.toLong(), 0, sizeY))
             else -> null
         }
 
@@ -117,7 +118,7 @@ abstract class AbstractViewFinder(
 
         this.contentSource.writeSlice(this.currentSlice)
         this.scrollY = if (scrollDirection == ScrollDirection.UP) scrollY - scrollAmount else scrollY + scrollAmount
-        this.scrollY = Math.clamp(this.scrollY.toLong(), 0, this.size.rows).toUInt()
+        this.scrollY = clamp(this.scrollY.toLong(), 0, this.size.rows).toUInt()
         val startLine: UInt = this.scrollY
         val endLine: UInt = this.scrollY + this.size.rows.toUInt()
         this.currentSlice = this.contentSource.readSlice(startLine.toInt(), endLine.toInt())
