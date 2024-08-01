@@ -11,8 +11,8 @@ object Edtr {
 
     val terminal: Terminal = DefaultTerminalFactory(System.out, System.`in`, Charset.defaultCharset())
         .setTerminalEmulatorTitle("Edtr")
-        .setForceTextTerminal(true)
-        .setPreferTerminalEmulator(false)
+        .setForceTextTerminal(false)
+        .setPreferTerminalEmulator(true)
         .setUnixTerminalCtrlCBehaviour(UnixLikeTerminal.CtrlCBehaviour.TRAP)
         .createTerminal()
 
@@ -22,11 +22,11 @@ object Edtr {
 
         terminal.enterPrivateMode()
         terminal.setCursorVisible(false)
+
         var key: KeyStroke? = terminal.pollInput()
 
         while (!(key?.isCtrlDown == true && key.character == 'c')) {
-            key?.let {
-
+            key?.let { keyStroke: KeyStroke ->
             }
 
             //TODO: rendering?

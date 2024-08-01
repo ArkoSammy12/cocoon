@@ -1,20 +1,27 @@
 package xd.arkosammy.edtr.view
 
+import com.googlecode.lanterna.TerminalPosition
 import com.googlecode.lanterna.TerminalSize
+import com.googlecode.lanterna.TextCharacter
+import com.googlecode.lanterna.input.KeyStroke
 import xd.arkosammy.edtr.driver.ContentSource
+import xd.arkosammy.edtr.util.EditingMode
+import xd.arkosammy.edtr.util.ScrollDirection
+import xd.arkosammy.edtr.util.TextLine
 
-/**
- * Represents a generic object which can display content to the screen
- *
- */
+
 interface ViewFinder {
 
-    val scrollAmount: UInt
+    val contentSource: ContentSource
+
+    val textLines: List<TextLine>
+
+    val cursorPosition: TerminalPosition
 
     val size: TerminalSize
 
-    fun scroll(contentSource: ContentSource, scrollAmount: Int = 1)
+    var editingMode: EditingMode
 
-    fun display()
+    fun onKeyStroke(keyStroke: KeyStroke)
 
 }
