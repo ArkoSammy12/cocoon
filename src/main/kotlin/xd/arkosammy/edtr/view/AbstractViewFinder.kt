@@ -128,7 +128,7 @@ abstract class AbstractViewFinder(
 
     override fun render() : List<TextLine> {
         val lines: List<String> = this.currentSlice.contents.split("\n", "\r")
-        return lines.map { l -> TextLine.fromString(l) }.toList()
+        return lines.map { l -> TextLine.fromString(l, size.columns) }.toList()
     }
 
 }
