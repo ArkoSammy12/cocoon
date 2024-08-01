@@ -1,6 +1,6 @@
 package xd.arkosammy.edtr.driver
 
-data class Slice(private var innerContents: String, val startLine: Int, val endLine: Int, var hasChanged: Boolean) {
+data class Slice(private var innerContents: String, val startLine: Int, val endLine: Int, var hasChanged: Boolean = false) {
     val contents: String
         get() {
             return innerContents

@@ -17,11 +17,21 @@ class ShellSource : ContentSource {
     }
 
     override fun readSlice(startLine: Int, endLine: Int): Slice {
-        TODO("Not yet implemented")
+        val lines = fout.readLines()
+        val endLine = endLine.coerceAtMost(lines.size)
+        var result = ""
+
+        lines.subList(startLine, endLine).forEach {
+            result += it
+            result += '\n'
+        }
+
+        return Slice(result, startLine, endLine)
     }
 
     override fun writeSlice(slice: Slice) {
-        TODO("Not yet implemented")
+        fout.writeText(slice.contents)
+        fin.writeText(slice.contents)
     }
 
     override fun save(overridePath: String?): Boolean {
