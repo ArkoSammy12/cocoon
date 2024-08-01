@@ -60,7 +60,7 @@ abstract class AbstractViewFinder(
             return
         }
 
-        if (keyStroke.keyType != KeyType.Character)
+        if (keyStroke.keyType != KeyType.Character && keyStroke.keyType != KeyType.Backspace)
             return
 
         val scrollDirection: ScrollDirection? = when (keyStroke.keyType) {
@@ -77,15 +77,29 @@ abstract class AbstractViewFinder(
         }
 
         val newChar: Char? = keyStroke.character
+        val isBackSpace: Boolean = keyStroke.keyType == KeyType.Backspace
+
+        if (newChar == null && !isBackSpace) {
+            return
+        }
+
         val lines: List<String> = this.currentSlice.contents.split("\n", "\r")
         val newLines: MutableList<String> = mutableListOf()
 
         for (y in lines.indices) {
             var currentLine: String = lines[y]
             if (this.cursorPosition.row == y) {
-                val firstPart: String = currentLine.substring(0, this.cursorPosition.column)
-                val secondPart: String = currentLine.substring(this.cursorPosition.column, currentLine.length)
-                currentLine = firstPart + newChar + secondPart
+
+                currentLine = if (isBackSpace) {
+                    val firstPart: String = currentLine.substring(0, this.cursorPosition.column - 1)
+                    val secondPart: String = currentLine.substring(this.cursorPosition.column, currentLine.length)
+                    firstPart + secondPart
+                } else {
+                    val firstPart: String = currentLine.substring(0, this.cursorPosition.column)
+                    val secondPart: String = currentLine.substring(this.cursorPosition.column, currentLine.length)
+                    firstPart + newChar + secondPart
+                }
+
             }
             newLines.add(currentLine)
         }
@@ -96,7 +110,8 @@ abstract class AbstractViewFinder(
         }
 
         this.currentSlice.modified(newContents)
-        this.backingCursorPosition = TerminalPosition(this.cursorPosition.column + 1, this.cursorPosition.row)
+        val newCursorX: Int = if (isBackSpace) this.cursorPosition.column - 1 else this.cursorPosition.column + 1
+        this.backingCursorPosition = TerminalPosition(newCursorX, this.cursorPosition.row)
 
     }
 
