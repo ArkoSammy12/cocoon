@@ -4,7 +4,9 @@ import com.googlecode.lanterna.TerminalPosition
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory
 import com.googlecode.lanterna.terminal.Terminal
 import com.googlecode.lanterna.terminal.ansi.UnixLikeTerminal
+import xd.arkosammy.edtr.driver.FileSource
 import java.nio.charset.Charset
+import com.googlecode.lanterna.input.KeyStroke
 
 object Edtr {
 
@@ -17,13 +19,26 @@ object Edtr {
 
     @JvmStatic
     fun main(args: Array<String>) {
+        val file = FileSource(args[0])
 
-        println("Hello world")
-        terminal.terminalSize
-        terminal.cursorPosition = TerminalPosition(0, 0)
-        terminal.putString("Hello world")
-        terminal.flush()
+        terminal.enterPrivateMode()
+        var key: KeyStroke? = terminal.pollInput()
 
+        while (!(key?.isCtrlDown == true && key.character == 'c')) {
+            key?.let {
+
+            }
+
+            //TODO: rendering?
+//            terminal.terminalSize
+//            terminal.cursorPosition = TerminalPosition(0, 0)
+//            terminal.putString(file.readSlice(0, 5).contents)
+//            terminal.flush()
+
+            key = terminal.pollInput()
+        }
+
+        terminal.exitPrivateMode()
     }
 
 }

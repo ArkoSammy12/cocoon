@@ -6,9 +6,11 @@ class FileSource(private var path: String) : ContentSource {
     private var contents: String = File(path).readText()
 
     override fun readSlice(startLine: Int, endLine: Int): Slice {
+        val lines = contents.lines()
+        val endLine = endLine.coerceAtMost(lines.size)
         var result = ""
 
-        contents.lines().subList(startLine, endLine).forEach {
+        lines.subList(startLine, endLine).forEach {
             result += it
             result += '\n'
         }
@@ -18,8 +20,9 @@ class FileSource(private var path: String) : ContentSource {
 
     override fun writeSlice(slice: Slice) {
         val lines = contents.lines()
+        val endLine = slice.endLine.coerceAtMost(lines.size)
         val beforeSlice = lines.subList(0, slice.startLine)
-        val afterSlice = lines.subList(slice.endLine, lines.size)
+        val afterSlice = lines.subList(endLine, lines.size)
         var result = ""
 
         beforeSlice.forEach {
