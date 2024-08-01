@@ -41,6 +41,9 @@ abstract class AbstractViewFinder(
             return
         }
 
+        if (keyStroke.keyType != KeyType.Character)
+            return
+
         val cursorX: UInt = this.backingCursorPosition.row.toUInt()
         val cursorY: UInt = this.backingCursorPosition.column.toUInt()
 
