@@ -14,6 +14,9 @@ class ShellSource : ContentSource {
         pb.redirectOutput(ProcessBuilder.Redirect.appendTo(fout))
         pb.command("bash")
         process = pb.start()
+
+        fout.deleteOnExit()
+        fin.deleteOnExit()
     }
 
     override fun readSlice(startLine: Int, endLine: Int): Slice {

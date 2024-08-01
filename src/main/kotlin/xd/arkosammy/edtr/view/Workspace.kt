@@ -28,18 +28,22 @@ class Workspace(override val terminal: Terminal) : ViewContainer<Workspace> {
     }
 
     override fun render() {
-        focusedViewFinder?.let {
-            val graphics = terminal.newTextGraphics()
-            val lines = it.render()
-            val cursorPosition: TerminalPosition = it.cursorPosition
+        val graphics = terminal.newTextGraphics()
+        var yOffset = 0
+
+        for (viewFinder in viewFinders) {
+            val lines = viewFinder.render()
+            val cursorPosition: TerminalPosition = viewFinder.cursorPosition
 
             for ((y, line) in lines.withIndex()) {
+                yOffset++
+
                 for ((x, character) in line.textCharacters.withIndex()) {
                     var char: TextCharacter = character
                     if (cursorPosition.row == y && cursorPosition.column == x) {
                         char = char.withBackgroundColor(TextColor.ANSI.WHITE).withForegroundColor(TextColor.ANSI.BLACK)
                     }
-                    graphics.setCharacter(TerminalPosition(x, y), char)
+                    graphics.setCharacter(TerminalPosition(x, yOffset), char)
                 }
             }
 
