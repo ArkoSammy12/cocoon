@@ -23,7 +23,7 @@ object Edtr {
     @JvmStatic
     fun main(args: Array<String>) {
         val file = FileSource(args[0])
-        val workspace = Workspace(terminal).addViewFinder(TextEditorViewFinder(file, listOf(), TerminalPosition.TOP_LEFT_CORNER, terminal.terminalSize, EditingMode.INSERT))
+        val workspace = Workspace(terminal).addViewFinder(TextEditorViewFinder(file, terminal.terminalSize, listOf(), TerminalPosition.TOP_LEFT_CORNER, EditingMode.INSERT))
 
         terminal.enterPrivateMode()
         terminal.setCursorVisible(false)
