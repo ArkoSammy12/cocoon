@@ -7,7 +7,8 @@ import com.googlecode.lanterna.terminal.Terminal
 
 class Workspace(override val terminal: Terminal) : ViewContainer<Workspace> {
     private val viewFinders: MutableList<ViewFinder> = mutableListOf()
-    override val focusedViewFinder: ViewFinder? = viewFinders.firstOrNull()
+    override val focusedViewFinder: ViewFinder?
+        get() = viewFinders.firstOrNull()
 
     override fun addViewFinder(viewFinder: ViewFinder): Workspace {
         viewFinders.add(viewFinder)
@@ -34,6 +35,7 @@ class Workspace(override val terminal: Terminal) : ViewContainer<Workspace> {
                     graphics.setCharacter(TerminalPosition(x, y), character)
                 }
             }
+            this.terminal.flush()
         }
     }
 }
