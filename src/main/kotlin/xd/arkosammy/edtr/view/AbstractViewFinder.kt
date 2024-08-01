@@ -10,22 +10,26 @@ import xd.arkosammy.edtr.util.EditingMode
 import xd.arkosammy.edtr.util.ScrollDirection
 import xd.arkosammy.edtr.util.TextLine
 
-abstract class AbstractViewFinder(final override val contentSource: ContentSource, size: TerminalSize) : ViewFinder {
+abstract class AbstractViewFinder(
+    final override val contentSource: ContentSource,
+    size: TerminalSize,
+    textLines: List<TextLine>,
+    cursorPosition: TerminalPosition,
+    override var editingMode: EditingMode
+) : ViewFinder {
 
     private var scrollX: UInt = 0u
     private var scrollY: UInt = 0u
 
     private var currentSlice: Slice = this.contentSource.readSlice(scrollY.toInt(), scrollY.toInt() + size.rows)
 
-    private var backingCursorPosition: TerminalPosition = TerminalPosition(0 ,0)
+    private var backingCursorPosition: TerminalPosition = cursorPosition
     override val cursorPosition: TerminalPosition by ::backingCursorPosition
 
     private var backingSize: TerminalSize = size
     override val size: TerminalSize by ::backingSize
 
-    override var editingMode: EditingMode = EditingMode.INSERT
-
-    private val backingTextLines: MutableList<TextLine> = mutableListOf()
+    private val backingTextLines: MutableList<TextLine> = textLines.toMutableList()
     override val textLines: List<TextLine>
         get() = backingTextLines.toList()
 
