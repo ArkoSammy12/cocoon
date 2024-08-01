@@ -44,10 +44,10 @@ abstract class AbstractViewFinder(final override val contentSource: ContentSourc
         val sizeY: UInt = this.size.columns.toUInt()
 
         val scrollDirection: ScrollDirection? = when (keyStroke.keyType) {
-            KeyType.ArrowUp -> if (cursorY >= sizeY) ScrollDirection.UP else null
+            KeyType.ArrowUp -> if (cursorY >= sizeY) ScrollDirection.DOWN else null
             KeyType.ArrowLeft -> if (cursorX <= 0u) ScrollDirection.LEFT else null
             KeyType.ArrowRight -> if (cursorX >= sizeX) ScrollDirection.RIGHT else null
-            KeyType.ArrowDown -> if (cursorY <= 0u) ScrollDirection.DOWN else null
+            KeyType.ArrowDown -> if (cursorY <= 0u) ScrollDirection.UP else null
             else -> null
         }
 
@@ -95,8 +95,8 @@ abstract class AbstractViewFinder(final override val contentSource: ContentSourc
     private fun scroll(scrollAmount: UInt, scrollDirection: ScrollDirection) {
 
         this.contentSource.writeSlice(this.currentSlice)
-        this.scrollY += scrollAmount
-        this.scrollY = Math.clamp(this.scrollX.toLong(), 0, this.size.rows).toUInt()
+        this.scrollY = if (scrollDirection == ScrollDirection.UP) scrollY - scrollAmount else scrollY + scrollAmount
+        this.scrollY = Math.clamp(this.scrollY.toLong(), 0, this.size.rows).toUInt()
         val startLine: UInt = this.scrollY
         val endLine: UInt = this.scrollY + this.size.rows.toUInt()
         this.currentSlice = this.contentSource.readSlice(startLine.toInt(), endLine.toInt())
