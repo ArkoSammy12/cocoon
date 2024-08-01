@@ -1,5 +1,6 @@
 package xd.arkosammy.edtr.view
 
+import com.googlecode.lanterna.TerminalPosition
 import com.googlecode.lanterna.input.KeyStroke
 import com.googlecode.lanterna.input.KeyType
 import com.googlecode.lanterna.terminal.Terminal
@@ -24,6 +25,15 @@ class Workspace(override val terminal: Terminal) : ViewContainer<Workspace> {
     }
 
     override fun render() {
-        TODO("Not yet implemented")
+        focusedViewFinder?.let {
+            val graphics = terminal.newTextGraphics()
+            val lines = it.render()
+
+            for ((y, line) in lines.withIndex()) {
+                for ((x, character) in line.textCharacters.withIndex()) {
+                    graphics.setCharacter(TerminalPosition(x, y), character)
+                }
+            }
+        }
     }
 }

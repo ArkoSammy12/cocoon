@@ -22,5 +22,5 @@ interface ViewFinder {
 
     fun onKeyStroke(keyStroke: KeyStroke)
 
-    fun render() : List<TextLine>
+    fun render(): List<TextLine>
 }
