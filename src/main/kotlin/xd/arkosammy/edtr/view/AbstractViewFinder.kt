@@ -116,7 +116,7 @@ abstract class AbstractViewFinder(
 
         this.contentSource.writeSlice(this.currentSlice)
         this.scrollY = if (scrollDirection == ScrollDirection.UP) scrollY - scrollAmount else scrollY + scrollAmount
-        this.scrollY = Math.clamp(this.scrollY.toLong(), 0, this.size.rows).toUInt()
+        this.scrollY = clamp(this.scrollY.toLong(), 0, this.size.rows).toUInt()
         val startLine: UInt = this.scrollY
         val endLine: UInt = this.scrollY + this.size.rows.toUInt()
         this.currentSlice = this.contentSource.readSlice(startLine.toInt(), endLine.toInt())
