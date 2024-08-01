@@ -16,7 +16,7 @@ interface ViewFinder {
 
     val cursorPosition: TerminalPosition
 
-    val size: TerminalSize
+    var size: TerminalSize
 
     var editingMode: EditingMode
 

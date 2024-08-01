@@ -12,7 +12,7 @@ import xd.arkosammy.edtr.util.TextLine
 
 abstract class AbstractViewFinder(
     final override val contentSource: ContentSource,
-    size: TerminalSize,
+    override var size: TerminalSize,
     textLines: List<TextLine>,
     cursorPosition: TerminalPosition,
     override var editingMode: EditingMode
@@ -25,9 +25,6 @@ abstract class AbstractViewFinder(
 
     private var backingCursorPosition: TerminalPosition = cursorPosition
     override val cursorPosition: TerminalPosition by ::backingCursorPosition
-
-    private var backingSize: TerminalSize = size
-    override val size: TerminalSize by ::backingSize
 
     private val backingTextLines: MutableList<TextLine> = textLines.toMutableList()
     override val textLines: List<TextLine>
@@ -44,8 +41,8 @@ abstract class AbstractViewFinder(
         val cursorX: UInt = this.backingCursorPosition.column.toUInt()
         val cursorY: UInt = this.backingCursorPosition.row.toUInt()
 
-        val sizeX: UInt = this.size.rows.toUInt()
-        val sizeY: UInt = this.size.columns.toUInt()
+        val sizeX: UInt = this.size.columns.toUInt()
+        val sizeY: UInt = this.size.rows.toUInt()
 
         val newCursorPosition: TerminalPosition? = when (keyStroke.keyType) {
             KeyType.ArrowUp -> TerminalPosition(Math.clamp(cursorX.toLong(), 0, sizeX.toInt()), Math.clamp(cursorY.toLong() - 1, 0, sizeY.toInt()))

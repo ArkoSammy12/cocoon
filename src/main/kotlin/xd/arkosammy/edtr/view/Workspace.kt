@@ -13,6 +13,9 @@ class Workspace(override val terminal: Terminal) : ViewContainer<Workspace> {
 
     override fun addViewFinder(viewFinder: ViewFinder): Workspace {
         viewFinders.add(viewFinder)
+        this.terminal.addResizeListener { terminal, newSize ->
+            viewFinder.size = newSize
+        }
         return this
     }
 
