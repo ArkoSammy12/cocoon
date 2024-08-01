@@ -1,7 +1,6 @@
 package xd.arkosammy.edtr.view
 
 import com.googlecode.lanterna.TerminalPosition
-import com.googlecode.lanterna.TextCharacter
 import com.googlecode.lanterna.TextColor
 import com.googlecode.lanterna.input.KeyStroke
 import com.googlecode.lanterna.input.KeyType
@@ -38,11 +37,13 @@ class Workspace(override val terminal: Terminal) : ViewContainer<Workspace> {
             for ((y, line) in lines.withIndex()) {
                 yOffset++
 
-                for ((x, character) in line.textCharacters.withIndex()) {
-                    var char: TextCharacter = character
+                for ((x, char) in line.textCharacters.withIndex()) {
+                    var char = char
+
                     if (cursorPosition.row == y && cursorPosition.column == x) {
                         char = char.withBackgroundColor(TextColor.ANSI.WHITE).withForegroundColor(TextColor.ANSI.BLACK)
                     }
+
                     graphics.setCharacter(TerminalPosition(x, yOffset), char)
                 }
             }

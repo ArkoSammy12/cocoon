@@ -13,10 +13,10 @@ class TextLine(val textCharacters: List<TextCharacter> = listOf()) {
                 textCharacters.add(TextCharacter(c))
             }
 
+            textCharacters.add(TextCharacter(' '))
             return TextLine(textCharacters.toList())
         }
 
     }
-
 
 }
