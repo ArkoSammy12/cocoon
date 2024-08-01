@@ -24,4 +24,5 @@ interface ViewFinder {
 
     fun onKeyStroke(keyStroke: KeyStroke)
 
+    fun render()
 }

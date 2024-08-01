@@ -1,11 +1,15 @@
 package xd.arkosammy.edtr
 
+import com.googlecode.lanterna.TerminalPosition
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory
 import com.googlecode.lanterna.terminal.Terminal
 import com.googlecode.lanterna.terminal.ansi.UnixLikeTerminal
 import xd.arkosammy.edtr.driver.FileSource
 import java.nio.charset.Charset
 import com.googlecode.lanterna.input.KeyStroke
+import xd.arkosammy.edtr.util.EditingMode
+import xd.arkosammy.edtr.view.TextEditorViewFinder
+import xd.arkosammy.edtr.view.Workspace
 
 object Edtr {
 
@@ -19,6 +23,7 @@ object Edtr {
     @JvmStatic
     fun main(args: Array<String>) {
         val file = FileSource(args[0])
+        val workspace = Workspace(terminal, TextEditorViewFinder(file, listOf(), TerminalPosition.TOP_LEFT_CORNER, terminal.terminalSize, EditingMode.INSERT))
 
         terminal.enterPrivateMode()
         terminal.setCursorVisible(false)
@@ -27,14 +32,10 @@ object Edtr {
 
         while (!(key?.isCtrlDown == true && key.character == 'c')) {
             key?.let { keyStroke: KeyStroke ->
+                workspace.onKeyStroke(keyStroke)
             }
 
-            //TODO: rendering?
-//            terminal.terminalSize
-//            terminal.cursorPosition = TerminalPosition(0, 0)
-//            terminal.putString(file.readSlice(0, 5).contents)
-//            terminal.flush()
-
+            workspace.render()
             key = terminal.pollInput()
         }
 
