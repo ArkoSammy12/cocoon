@@ -38,17 +38,18 @@ abstract class AbstractViewFinder(
             return
         }
 
-        val cursorX: UInt = this.backingCursorPosition.column.toUInt()
-        val cursorY: UInt = this.backingCursorPosition.row.toUInt()
+        val cursorX: Int = this.backingCursorPosition.column
+        val cursorY: Int = this.backingCursorPosition.row
 
-        val sizeX: UInt = this.size.columns.toUInt()
-        val sizeY: UInt = this.size.rows.toUInt()
+        val lines: List<String> = this.currentSlice.contents.split("\n", "\r")
+        val sizeX: Int = lines[cursorY].length + 1
+        val sizeY: Int = lines.size - 1
 
         val newCursorPosition: TerminalPosition? = when (keyStroke.keyType) {
-            KeyType.ArrowUp -> TerminalPosition(Math.clamp(cursorX.toLong(), 0, sizeX.toInt()), Math.clamp(cursorY.toLong() - 1, 0, sizeY.toInt()))
-            KeyType.ArrowLeft -> TerminalPosition(Math.clamp(cursorX.toLong() - 1, 0, sizeX.toInt()), Math.clamp(cursorY.toLong(), 0, sizeY.toInt()))
-            KeyType.ArrowRight -> TerminalPosition(Math.clamp(cursorX.toLong() + 1, 0, sizeX.toInt()), Math.clamp(cursorY.toLong(), 0, sizeY.toInt()))
-            KeyType.ArrowDown -> TerminalPosition(Math.clamp(cursorX.toLong(), 0, sizeX.toInt()), Math.clamp(cursorY.toLong() + 1, 0, sizeY.toInt()))
+            KeyType.ArrowUp -> TerminalPosition(Math.clamp(cursorX.toLong(), 0, lines[cursorY - 1].length), Math.clamp(cursorY.toLong() - 1, 0, sizeY))
+            KeyType.ArrowDown -> TerminalPosition(Math.clamp(cursorX.toLong(), 0, lines[cursorY + 1].length), Math.clamp(cursorY.toLong() + 1, 0, sizeY))
+            KeyType.ArrowLeft -> TerminalPosition(Math.clamp(cursorX.toLong() - 1, 0, sizeX), Math.clamp(cursorY.toLong(), 0, sizeY))
+            KeyType.ArrowRight -> TerminalPosition(Math.clamp(cursorX.toLong() + 1, 0, sizeX), Math.clamp(cursorY.toLong(), 0, sizeY))
             else -> null
         }
 
@@ -60,11 +61,12 @@ abstract class AbstractViewFinder(
         if (keyStroke.keyType != KeyType.Character && keyStroke.keyType != KeyType.Backspace)
             return
 
+        //TODO: fix
         val scrollDirection: ScrollDirection? = when (keyStroke.keyType) {
             KeyType.ArrowUp -> if (cursorY >= sizeY) ScrollDirection.DOWN else null
-            KeyType.ArrowLeft -> if (cursorX <= 0u) ScrollDirection.LEFT else null
+            KeyType.ArrowLeft -> if (cursorX <= 0) ScrollDirection.LEFT else null
             KeyType.ArrowRight -> if (cursorX >= sizeX) ScrollDirection.RIGHT else null
-            KeyType.ArrowDown -> if (cursorY <= 0u) ScrollDirection.UP else null
+            KeyType.ArrowDown -> if (cursorY <= 0) ScrollDirection.UP else null
             else -> null
         }
 
@@ -80,7 +82,6 @@ abstract class AbstractViewFinder(
             return
         }
 
-        val lines: List<String> = this.currentSlice.contents.split("\n", "\r")
         val newLines: MutableList<String> = mutableListOf()
 
         for (y in lines.indices) {
