@@ -34,6 +34,8 @@ class Workspace(override val terminal: Terminal) : ViewContainer<Workspace> {
                     graphics.setCharacter(TerminalPosition(x, y), character)
                 }
             }
+
+            terminal.flush()
         }
     }
 }
