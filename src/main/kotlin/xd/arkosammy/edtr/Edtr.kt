@@ -1,6 +1,5 @@
 package xd.arkosammy.edtr
 
-import com.googlecode.lanterna.TerminalPosition
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory
 import com.googlecode.lanterna.terminal.Terminal
 import com.googlecode.lanterna.terminal.ansi.UnixLikeTerminal
@@ -22,6 +21,7 @@ object Edtr {
         val file = FileSource(args[0])
 
         terminal.enterPrivateMode()
+        terminal.setCursorVisible(false)
         var key: KeyStroke? = terminal.pollInput()
 
         while (!(key?.isCtrlDown == true && key.character == 'c')) {
@@ -38,6 +38,7 @@ object Edtr {
             key = terminal.pollInput()
         }
 
+        terminal.setCursorVisible(true)
         terminal.exitPrivateMode()
     }
 
