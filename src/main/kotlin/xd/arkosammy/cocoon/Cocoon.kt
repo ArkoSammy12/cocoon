@@ -13,14 +13,24 @@ import xd.arkosammy.cocoon.view.Workspace
 
 object Cocoon {
 
-    val terminal: Terminal = DefaultTerminalFactory(System.out, System.`in`, Charset.defaultCharset())
-        .setTerminalEmulatorTitle("Cocoon")
-        .setPreferTerminalEmulator(false)
-        .setUnixTerminalCtrlCBehaviour(UnixLikeTerminal.CtrlCBehaviour.TRAP)
-        .createTerminal()
+    lateinit var terminal: Terminal
 
     @JvmStatic
     fun main(args: Array<String>) {
+
+        val terminalFactory: DefaultTerminalFactory = DefaultTerminalFactory(System.out, System.`in`, Charset.defaultCharset())
+            .setTerminalEmulatorTitle("Cocoon")
+            .setPreferTerminalEmulator(false)
+            .setUnixTerminalCtrlCBehaviour(UnixLikeTerminal.CtrlCBehaviour.TRAP)
+
+        terminal = try {
+            terminalFactory
+                .createTerminal()
+        } catch (_: Exception) {
+            terminalFactory
+                .createTerminalEmulator()
+        }
+
         val file = FileSource(args[0])
         val workspace = Workspace(terminal).addViewFinder(TextEditorViewFinder(file, terminal.terminalSize, listOf(), TerminalPosition.TOP_LEFT_CORNER, EditingMode.INSERT))
 
