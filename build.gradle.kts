@@ -7,6 +7,7 @@ plugins {
 group = property("maven_group")!!
 version = property("project_version")!!
 val archiveName: String = property("archive_base_name").toString()
+val mainClassQualifiedName: String = property("main_class").toString()
 
 repositories {
     mavenCentral()
@@ -15,7 +16,7 @@ repositories {
 tasks.withType<Jar> {
     manifest {
         attributes["Manifest-Version"] = version
-        attributes["Main-Class"] = "xd.arkosammy.cocoon.Cocoon"
+        attributes["Main-Class"] = mainClassQualifiedName
     }
     from({
         configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) }
@@ -40,7 +41,7 @@ kotlin {
 graalvmNative {
     binaries {
         named("main") {
-            mainClass.set("xd.arkosammy.cocoon.Cocoon")
+            mainClass.set(mainClassQualifiedName)
         }
     }
 }
