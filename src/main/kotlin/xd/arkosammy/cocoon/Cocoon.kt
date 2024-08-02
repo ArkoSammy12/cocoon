@@ -1,17 +1,17 @@
-package xd.arkosammy.edtr
+package xd.arkosammy.cocoon
 
 import com.googlecode.lanterna.TerminalPosition
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory
 import com.googlecode.lanterna.terminal.Terminal
 import com.googlecode.lanterna.terminal.ansi.UnixLikeTerminal
-import xd.arkosammy.edtr.driver.FileSource
+import xd.arkosammy.cocoon.driver.FileSource
 import java.nio.charset.Charset
 import com.googlecode.lanterna.input.KeyStroke
-import xd.arkosammy.edtr.util.EditingMode
-import xd.arkosammy.edtr.view.TextEditorViewFinder
-import xd.arkosammy.edtr.view.Workspace
+import xd.arkosammy.cocoon.util.EditingMode
+import xd.arkosammy.cocoon.view.TextEditorViewFinder
+import xd.arkosammy.cocoon.view.Workspace
 
-object Edtr {
+object Cocoon {
 
     val terminal: Terminal = DefaultTerminalFactory(System.out, System.`in`, Charset.defaultCharset())
         .setTerminalEmulatorTitle("Edtr")

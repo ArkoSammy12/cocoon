@@ -1,10 +1,10 @@
-package xd.arkosammy.edtr.view
+package xd.arkosammy.cocoon.view
 
 import com.googlecode.lanterna.TerminalPosition
 import com.googlecode.lanterna.TerminalSize
-import xd.arkosammy.edtr.driver.ContentSource
-import xd.arkosammy.edtr.util.EditingMode
-import xd.arkosammy.edtr.util.TextLine
+import xd.arkosammy.cocoon.driver.ContentSource
+import xd.arkosammy.cocoon.util.EditingMode
+import xd.arkosammy.cocoon.util.TextLine
 
 class TextEditorViewFinder(
     contentSource: ContentSource,

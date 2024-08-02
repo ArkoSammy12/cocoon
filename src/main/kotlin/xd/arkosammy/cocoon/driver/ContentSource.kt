@@ -1,4 +1,4 @@
-package xd.arkosammy.edtr.driver
+package xd.arkosammy.cocoon.driver
 
 interface ContentSource {
     /**

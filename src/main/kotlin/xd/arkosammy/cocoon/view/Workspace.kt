@@ -1,4 +1,4 @@
-package xd.arkosammy.edtr.view
+package xd.arkosammy.cocoon.view
 
 import com.googlecode.lanterna.TerminalPosition
 import com.googlecode.lanterna.TextColor

@@ -1,4 +1,4 @@
-package xd.arkosammy.edtr.util
+package xd.arkosammy.cocoon.util
 
 import com.googlecode.lanterna.TextCharacter
 

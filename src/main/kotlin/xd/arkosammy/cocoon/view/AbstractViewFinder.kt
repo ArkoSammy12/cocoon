@@ -1,14 +1,14 @@
-package xd.arkosammy.edtr.view
+package xd.arkosammy.cocoon.view
 
 import com.googlecode.lanterna.TerminalPosition
 import com.googlecode.lanterna.TerminalSize
 import com.googlecode.lanterna.input.KeyStroke
 import com.googlecode.lanterna.input.KeyType
-import xd.arkosammy.edtr.driver.ContentSource
-import xd.arkosammy.edtr.driver.Slice
-import xd.arkosammy.edtr.util.EditingMode
-import xd.arkosammy.edtr.util.ScrollDirection
-import xd.arkosammy.edtr.util.TextLine
+import xd.arkosammy.cocoon.driver.ContentSource
+import xd.arkosammy.cocoon.driver.Slice
+import xd.arkosammy.cocoon.util.EditingMode
+import xd.arkosammy.cocoon.util.ScrollDirection
+import xd.arkosammy.cocoon.util.TextLine
 import java.lang.Math.clamp
 
 abstract class AbstractViewFinder(

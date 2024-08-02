@@ -1,4 +1,4 @@
-package xd.arkosammy.edtr.view
+package xd.arkosammy.cocoon.view
 
 import com.googlecode.lanterna.input.KeyStroke
 import com.googlecode.lanterna.terminal.Terminal

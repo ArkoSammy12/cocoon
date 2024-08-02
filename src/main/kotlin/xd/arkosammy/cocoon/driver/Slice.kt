@@ -1,4 +1,4 @@
-package xd.arkosammy.edtr.driver
+package xd.arkosammy.cocoon.driver
 
 data class Slice(private var innerContents: String, val startLine: Int, val endLine: Int, var hasChanged: Boolean = false) {
     val contents: String by ::innerContents

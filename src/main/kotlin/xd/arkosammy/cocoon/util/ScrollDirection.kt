@@ -1,4 +1,4 @@
-package xd.arkosammy.edtr.util
+package xd.arkosammy.cocoon.util
 
 enum class ScrollDirection {
     UP,

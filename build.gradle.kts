@@ -15,7 +15,7 @@ repositories {
 tasks.withType<Jar> {
     manifest {
         attributes["Manifest-Version"] = version
-        attributes["Main-Class"] = "xd.arkosammy.edtr.Edtr"
+        attributes["Main-Class"] = "xd.arkosammy.cocoon.Cocoon"
     }
     from({
         configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) }
@@ -40,7 +40,7 @@ kotlin {
 graalvmNative {
     binaries {
         named("main") {
-            mainClass.set("xd.arkosammy.edtr.Edtr")
+            mainClass.set("xd.arkosammy.cocoon.Cocoon")
         }
     }
 }
