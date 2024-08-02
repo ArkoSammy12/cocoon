@@ -14,9 +14,8 @@ import xd.arkosammy.cocoon.view.Workspace
 object Cocoon {
 
     val terminal: Terminal = DefaultTerminalFactory(System.out, System.`in`, Charset.defaultCharset())
-        .setTerminalEmulatorTitle("Edtr")
-        .setForceTextTerminal(false)
-        .setPreferTerminalEmulator(true)
+        .setTerminalEmulatorTitle("Cocoon")
+        .setPreferTerminalEmulator(false)
         .setUnixTerminalCtrlCBehaviour(UnixLikeTerminal.CtrlCBehaviour.TRAP)
         .createTerminal()
 
