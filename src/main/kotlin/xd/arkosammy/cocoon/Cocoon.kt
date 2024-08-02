@@ -1,15 +1,12 @@
 package xd.arkosammy.cocoon
 
-import com.googlecode.lanterna.TerminalPosition
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory
 import com.googlecode.lanterna.terminal.Terminal
 import com.googlecode.lanterna.terminal.ansi.UnixLikeTerminal
 import xd.arkosammy.cocoon.driver.FileSource
 import java.nio.charset.Charset
 import com.googlecode.lanterna.input.KeyStroke
-import xd.arkosammy.cocoon.util.EditingMode
-import xd.arkosammy.cocoon.view.TextEditorViewFinder
-import xd.arkosammy.cocoon.view.Workspace
+import xd.arkosammy.cocoon.view.ViewContainer
 
 object Cocoon {
 
@@ -31,8 +28,7 @@ object Cocoon {
                 .createTerminalEmulator()
         }
 
-        val file = FileSource(args[0])
-        val workspace = Workspace(terminal).addViewFinder(TextEditorViewFinder(file, terminal.terminalSize, listOf(), TerminalPosition.TOP_LEFT_CORNER, EditingMode.INSERT))
+        val container = ViewContainer(terminal)
 
         terminal.enterPrivateMode()
         terminal.setCursorVisible(false)
@@ -41,10 +37,10 @@ object Cocoon {
 
         while (!(key?.isCtrlDown == true && key.character == 'c')) {
             key?.let { keyStroke: KeyStroke ->
-                workspace.onKeyStroke(keyStroke)
+                container.onKeyStroke(keyStroke)
             }
 
-            workspace.render()
+            container.render()
             key = terminal.pollInput()
         }
 

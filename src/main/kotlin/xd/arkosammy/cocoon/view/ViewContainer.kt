@@ -3,15 +3,14 @@ package xd.arkosammy.cocoon.view
 import com.googlecode.lanterna.input.KeyStroke
 import com.googlecode.lanterna.terminal.Terminal
 
-interface ViewContainer<out T : ViewContainer<T>> {
+class ViewContainer(val terminal: Terminal) {
+    val workspaceView: WorkspaceView = WorkspaceView(TODO())
 
-    val terminal: Terminal
+    fun onKeyStroke(keyStroke: KeyStroke) {
+        TODO()
+    }
 
-    val focusedViewFinder: ViewFinder?
-
-    fun addViewFinder(viewFinder: ViewFinder): T
-
-    fun onKeyStroke(keyStroke: KeyStroke)
-
-    fun render()
+    fun render() {
+        TODO()
+    }
 }

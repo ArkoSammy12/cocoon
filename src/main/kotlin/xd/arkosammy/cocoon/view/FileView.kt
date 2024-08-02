@@ -8,16 +8,16 @@ import xd.arkosammy.cocoon.driver.ContentSource
 import xd.arkosammy.cocoon.driver.Slice
 import xd.arkosammy.cocoon.util.EditingMode
 import xd.arkosammy.cocoon.util.ScrollDirection
-import xd.arkosammy.cocoon.util.TextLine
+import xd.arkosammy.cocoon.util.RenderedLine
 import java.lang.Math.clamp
 
-abstract class AbstractViewFinder(
+abstract class FileView(
     final override val contentSource: ContentSource,
     override var size: TerminalSize,
-    textLines: List<TextLine>,
+    textLines: List<RenderedLine>,
     cursorPosition: TerminalPosition,
     override var editingMode: EditingMode
-) : ViewFinder {
+) : View {
 
     private var scrollX: UInt = 0u
     private var scrollY: UInt = 0u
@@ -27,8 +27,8 @@ abstract class AbstractViewFinder(
     private var backingCursorPosition: TerminalPosition = cursorPosition
     override val cursorPosition: TerminalPosition by ::backingCursorPosition
 
-    private val backingTextLines: MutableList<TextLine> = textLines.toMutableList()
-    override val textLines: List<TextLine>
+    private val backingTextLines: MutableList<RenderedLine> = textLines.toMutableList()
+    override val textLines: List<RenderedLine>
         get() = backingTextLines.toList()
 
     override fun onKeyStroke(keyStroke: KeyStroke) {
@@ -42,7 +42,7 @@ abstract class AbstractViewFinder(
         val lines: List<String> = this.currentSlice.contents.split("\n", "\r")
         val cursorX: Int = this.backingCursorPosition.column
         val cursorY: Int = this.backingCursorPosition.row
-        val sizeY: Int = lines.size - 1
+        val sizeY: Int = lines.size - 2 //TODO: kinda works?
 
         val newCursorPosition: TerminalPosition? = when (keyStroke.keyType) {
             KeyType.ArrowUp -> TerminalPosition(cursorX, cursorY - 1)
@@ -60,11 +60,10 @@ abstract class AbstractViewFinder(
         if (keyStroke.keyType != KeyType.Character && keyStroke.keyType != KeyType.Backspace)
             return
 
-        //TODO: fix
         val scrollDirection: ScrollDirection? = when (keyStroke.keyType) {
             KeyType.ArrowUp -> if (cursorY >= sizeY) ScrollDirection.DOWN else null
             KeyType.ArrowLeft -> if (cursorX <= 0) ScrollDirection.LEFT else null
-            KeyType.ArrowRight -> if (cursorX >= lines[this.backingCursorPosition.row].length) ScrollDirection.RIGHT else null
+            KeyType.ArrowRight -> if (cursorX >= lines[this.cursorPosition.row].length) ScrollDirection.RIGHT else null
             KeyType.ArrowDown -> if (cursorY <= 0) ScrollDirection.UP else null
             else -> null
         }
@@ -123,9 +122,9 @@ abstract class AbstractViewFinder(
 
     }
 
-    override fun render() : List<TextLine> {
+    override fun render() : List<RenderedLine> {
         val lines: List<String> = this.currentSlice.contents.split("\n", "\r")
-        return lines.map { l -> TextLine.fromString(l, size.columns) }.toList()
+        return lines.map { l -> RenderedLine.fromString(l, size.columns) }.toList()
     }
 
 }

@@ -2,11 +2,12 @@ package xd.arkosammy.cocoon.util
 
 import com.googlecode.lanterna.TextCharacter
 
-class TextLine(val textCharacters: List<TextCharacter> = listOf()) {
+@JvmInline
+value class RenderedLine(val textCharacters: List<TextCharacter> = listOf()) {
 
     companion object {
 
-        fun fromString(string: String, sizeX: Int) : TextLine {
+        fun fromString(string: String, sizeX: Int) : RenderedLine {
             val textCharacters: MutableList<TextCharacter> = mutableListOf()
 
             for (c: Char in string) {
@@ -16,7 +17,7 @@ class TextLine(val textCharacters: List<TextCharacter> = listOf()) {
             for (size in sizeX downTo 0)
                 textCharacters.add(TextCharacter(' '))
 
-            return TextLine(textCharacters.toList())
+            return RenderedLine(textCharacters.toList())
         }
 
     }
