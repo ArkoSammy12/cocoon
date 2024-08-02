@@ -2,9 +2,27 @@ package xd.arkosammy.cocoon.util
 
 import com.googlecode.lanterna.TextCharacter
 
-@JvmInline
-value class RenderedLine(val textCharacters: List<TextCharacter> = listOf()) {
+class RenderedLine(length: UInt) {
 
+    private val textCharacters: MutableList<TextCharacter>
+
+    val length: UInt = length
+
+    init {
+        val textCharacters: MutableList<TextCharacter> = mutableListOf()
+        repeat (length.toInt()) {
+            textCharacters.add(TextCharacter(' '))
+        }
+        this.textCharacters = textCharacters
+    }
+
+    operator fun get(index: Int): TextCharacter = this.textCharacters[index]
+
+    operator fun set(index: Int, textCharacter: TextCharacter) {
+         this.textCharacters[index] = textCharacter
+    }
+
+    /*
     companion object {
 
         fun fromString(string: String, sizeX: Int) : RenderedLine {
@@ -21,5 +39,7 @@ value class RenderedLine(val textCharacters: List<TextCharacter> = listOf()) {
         }
 
     }
+
+     */
 
 }

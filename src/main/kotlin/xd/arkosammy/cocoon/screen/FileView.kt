@@ -1,4 +1,4 @@
-package xd.arkosammy.cocoon.view
+package xd.arkosammy.cocoon.screen
 
 import com.googlecode.lanterna.TerminalPosition
 import com.googlecode.lanterna.TerminalSize
@@ -9,15 +9,19 @@ import xd.arkosammy.cocoon.driver.Slice
 import xd.arkosammy.cocoon.util.EditingMode
 import xd.arkosammy.cocoon.util.ScrollDirection
 import xd.arkosammy.cocoon.util.RenderedLine
+import xd.arkosammy.cocoon.util.RenderedView
 import java.lang.Math.clamp
 
-abstract class FileView(
-    final override val contentSource: ContentSource,
+class FileView(
+    override val contentSource: ContentSource,
+    override val position: TerminalPosition,
     override var size: TerminalSize,
     textLines: List<RenderedLine>,
     cursorPosition: TerminalPosition,
-    override var editingMode: EditingMode
-) : View {
+    var editingMode: EditingMode
+) : ContentBackedView, TypeableView {
+
+    override var isFocused: Boolean = false
 
     private var scrollX: UInt = 0u
     private var scrollY: UInt = 0u
@@ -28,7 +32,7 @@ abstract class FileView(
     override val cursorPosition: TerminalPosition by ::backingCursorPosition
 
     private val backingTextLines: MutableList<RenderedLine> = textLines.toMutableList()
-    override val textLines: List<RenderedLine>
+    val textLines: List<RenderedLine>
         get() = backingTextLines.toList()
 
     override fun onKeyStroke(keyStroke: KeyStroke) {
@@ -122,9 +126,21 @@ abstract class FileView(
 
     }
 
-    override fun render() : List<RenderedLine> {
+    override fun save() {
+        this.contentSource.save()
+    }
+
+    override fun load() {
+
+    }
+
+    override fun getRenderedView() : RenderedView {
+        /*
         val lines: List<String> = this.currentSlice.contents.split("\n", "\r")
         return lines.map { l -> RenderedLine.fromString(l, size.columns) }.toList()
+
+         */
+        TODO()
     }
 
 }
